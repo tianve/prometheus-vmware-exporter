@@ -1,4 +1,4 @@
-FROM golang:1.19 as builder
+FROM golang:1.20.5-bullseye as builder
 WORKDIR /src/github.com/devinotelecom/prometheus-vmware-exporter
 COPY ./ /src/github.com/devinotelecom/prometheus-vmware-exporter
 RUN CGO_ENABLED=0 go get -d -v
