@@ -1,4 +1,4 @@
-module vmware_exporter
+module prometheus-vmware-exporter
 
 go 1.19
 
