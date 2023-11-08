@@ -1,7 +1,7 @@
 package main
 
 import (
-	"./controller"
+	controllers "vmware_exporter/controller"
 	"flag"
 	"fmt"
 	"github.com/prometheus/client_golang/prometheus/promhttp"
