@@ -115,12 +115,6 @@ var (
 		Name:      "host_mem_usage",
 		Help:      "Usage host memory",
 	}, []string{"vm_name", "host_name"})
-	prometheusVmOverheadMemUsage = prometheus.NewGaugeVec(prometheus.GaugeOpts{
-		Namespace: namespace,
-		Subsystem: "vm",
-		Name:      "overhead_mem_usage",
-		Help:      "Usage consumed overhead memory, in MB",
-	}, []string{"vm_name", "host_name"})
 )
 
 func totalCpu(hs mo.HostSystem) float64 {
@@ -165,7 +159,6 @@ func RegistredMetrics() {
 		prometheusVmNumCpu,
 		prometheusVmMemSizeMB,
 		prometheusVmMemUsage,
-		prometheusVmHostMemUsage,
 		prometheusVmHostMemUsage,
 		prometheusVmCpuUsage)
 }
@@ -270,13 +263,12 @@ func NewVmwareVmMetrics(host string, username string, password string, logger *l
 	for _, vm := range vms {
 		vmname := vm.Summary.Config.Name
 		prometheusVmBoot.WithLabelValues(vmname, host).Set(convertTime(vm))
-		prometheusVmUptime.WithLabelValues(vmname, host).Set(float64(vm.Summary.QuickStats.UptimeSeconds))
+		prometheusVmUptime.WithLabelValues(vmname, host).Set(float64(vm.Summary.QuickStats.Uptime))
 		prometheusVmMaxCpuUsage.WithLabelValues(vmname, host).Set(float64(vm.Summary.Runtime.MaxCpuUsage))
 		prometheusVmCpuUsage.WithLabelValues(vmname, host).Set(float64(vm.Summary.QuickStats.OverallCpuUsage))
 		prometheusVmNumCpu.WithLabelValues(vmname, host).Set(float64(vm.Summary.Config.NumCpu))
 		prometheusVmMemSizeMB.WithLabelValues(vmname, host).Set(float64(vm.Summary.Config.MemorySizeMB))
 		prometheusVmMemUsage.WithLabelValues(vmname, host).Set(float64(vm.Summary.QuickStats.GuestMemoryUsage))
 		prometheusVmHostMemUsage.WithLabelValues(vmname, host).Set(float64(vm.Summary.QuickStats.HostMemoryUsage))
-		prometheusVmOverheadMemUsage.WithLabelValues(vmname, host).Set(float64(vm.Summary.QuickStats.ConsumedOverheadMemoryUsage))
 	}
 }
