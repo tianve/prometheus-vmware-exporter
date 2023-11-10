@@ -263,7 +263,7 @@ func NewVmwareVmMetrics(host string, username string, password string, logger *l
 	for _, vm := range vms {
 		vmname := vm.Summary.Config.Name
 		prometheusVmBoot.WithLabelValues(vmname, host).Set(convertTime(vm))
-		prometheusVmUptime.WithLabelValues(vmname, host).Set(float64(vm.Summary.QuickStats.Uptime))
+		prometheusVmUptime.WithLabelValues(vmname, host).Set(float64(vm.Summary.QuickStats.UptimeSeconds))
 		prometheusVmMaxCpuUsage.WithLabelValues(vmname, host).Set(float64(vm.Summary.Runtime.MaxCpuUsage))
 		prometheusVmCpuUsage.WithLabelValues(vmname, host).Set(float64(vm.Summary.QuickStats.OverallCpuUsage))
 		prometheusVmNumCpu.WithLabelValues(vmname, host).Set(float64(vm.Summary.Config.NumCpu))
